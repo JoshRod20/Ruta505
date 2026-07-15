@@ -1,1 +1,37 @@
 @import "tailwindcss";
+
+@theme {
+  --color-ruta-forest: #0b6e36;
+  --color-ruta-ink: #123524;
+  --color-ruta-leaf: #8cc63f;
+  --color-ruta-sky: #29abe2;
+  --color-ruta-sun: #f7941d;
+  --color-ruta-cream: #fbf6ec;
+
+  --font-display: "Baloo 2", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+@keyframes ruta-pop {
+  0% { opacity: 0; transform: scale(0.85) translateY(6px); }
+  60% { opacity: 1; transform: scale(1.04) translateY(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes ruta-fade-up {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ruta-trail {
+  0%, 100% { opacity: 0.25; transform: scale(0.8); background-color: var(--color-ruta-leaf); }
+  50% { opacity: 1; transform: scale(1.15); background-color: var(--color-ruta-sun); }
+}
+
+.animate-ruta-pop {
+  animation: ruta-pop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-ruta-fade-up {
+  animation: ruta-fade-up 0.6s ease-out 0.5s both;
+}
