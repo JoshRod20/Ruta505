@@ -1,5 +1,7 @@
+// src/pages/turista/Onboarding.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../../styles/Onboarding.css";
 
 import pinolito from "../../assets/images/pinolito.png";
 import rama from "../../assets/images/rama-pinolito.png";
@@ -11,25 +13,63 @@ import nube1 from "../../assets/images/nube-1.png";
 import nube2 from "../../assets/images/nube-2.png";
 import flor1 from "../../assets/images/flor-1.png";
 import flor2 from "../../assets/images/flor-2.png";
-import sueloMarron from "../../assets/images/suelo-marron.png";
-import sueloVerde from "../../assets/images/suelo-verde.png";
 
 const SLIDES = [
-  { id: "bienvenida", title: "Bienvenid@ a Ruta 505", cta: "Comenzar", ground: null },
-  { id: "esencia", title: "Descubre la esencia de Nicaragua", cta: "Siguiente", ground: sueloVerde },
-  { id: "comunidades", title: "Conecta con comunidades auténticas", cta: "Siguiente", ground: sueloVerde },
-  { id: "experiencia", title: "Tu próxima experiencia comienza aquí", cta: "Comenzar", ground: sueloMarron },
+  {
+    id: "bienvenida",
+    title: "Bienvenid@ a Ruta 505",
+    subtitle: "Explora la cultura viva de Nicaragua junto a Pinolito, tu guía virtual.",
+    cta: "Comenzar",
+    ground: "sky",
+    lateralLeft: nube1,
+    lateralRight: nube2,
+  },
+  {
+    id: "esencia",
+    title: "Descubre la esencia de Nicaragua",
+    subtitle: "Historia, arquitectura colonial y tradiciones que laten en cada rincón del país.",
+    cta: "Siguiente",
+    ground: "grass",
+    lateralLeft: nube1,
+    lateralRight: nube2,
+  },
+  {
+    id: "comunidades",
+    title: "Conecta con comunidades auténticas",
+    subtitle: "Vive experiencias culturales creadas por artesanos, guías y comunidades locales.",
+    cta: "Siguiente",
+    ground: "grass",
+    lateralLeft: nube1,
+    lateralRight: nube2,
+  },
+  {
+    id: "experiencia",
+    title: "Tu próxima experiencia comienza aquí",
+    subtitle: "Crea tu cuenta y arma tu propia ruta cultural por Nicaragua.",
+    cta: "Comenzar",
+    ground: "soil",
+    lateralLeft: flor1,
+    lateralRight: flor2,
+  },
 ];
-
-// Quita el borde/anillo por defecto del navegador y pone uno propio, sutil, solo visible con teclado
-const focusRing =
-  "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2";
 
 const Onboarding = () => {
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
   const slide = SLIDES[step];
   const isLast = step === SLIDES.length - 1;
+
+  // ---------- Parallax de nubes con el mouse ----------
+  const [cloudOffset, setCloudOffset] = useState({ x: 0, y: 0 });
+
+  const handleSkyMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setCloudOffset({ x, y });
+  };
+
+  const handleSkyMouseLeave = () => setCloudOffset({ x: 0, y: 0 });
 
   const finish = () => {
     localStorage.setItem("ruta505_hasVisited", "true");
@@ -42,59 +82,57 @@ const Onboarding = () => {
     switch (slide.id) {
       case "bienvenida":
         return (
-          <div className="relative w-full h-full">
+          <div className="onboarding-scene">
             <img
               src={escenaBienvenida}
               alt="Volcán y laguna de Nicaragua"
-              className="absolute inset-x-0 bottom-0 w-full h-[68%] object-cover object-bottom"
+              className="onboarding-scene__bg"
             />
-            <img
-              src={rama}
-              alt=""
-              className="absolute bottom-[26%] left-1/2 -translate-x-1/2 z-10 w-[46%] max-w-[13rem]"
-            />
+            <img src={rama} alt="" className="onboarding-scene__rama" />
             <img
               src={pinolito}
               alt="Pinolito"
-              className="absolute bottom-[34%] left-1/2 -translate-x-1/2 z-20 w-[26%] max-w-[7rem] animate-ruta-pop"
+              className="onboarding-scene__pinolito"
             />
           </div>
         );
       case "esencia":
         return (
-          <div className="relative w-full h-full flex items-end justify-center pb-2">
+          <div className="onboarding-scene onboarding-scene--bottom">
             <img
               src={catedral}
               alt="Catedral de León"
-              className="max-h-full max-w-[75%] object-contain"
+              className="onboarding-scene__catedral"
             />
             <img
               src={bailarina}
               alt="Bailarina de folclor"
-              className="absolute bottom-[8%] right-[6%] w-[22%] max-w-[5.5rem] z-10"
+              className="onboarding-scene__bailarina"
             />
           </div>
         );
       case "comunidades":
         return (
-          // max-h-full es la clave: por muy alta que sea la imagen, nunca empuja al título
-          <div className="w-full h-full flex items-end justify-center pb-2">
+          <div className="onboarding-scene onboarding-scene--bottom">
             <img
               src={gigantona}
               alt="Gigantona y Enano Cabezón"
-              className="max-h-full max-w-[65%] object-contain"
+              className="onboarding-scene__gigantona"
             />
           </div>
         );
       case "experiencia":
         return (
-          // Ahora ancladas al fondo de ESTA zona, que termina justo donde empieza el pie
-          <div className="relative w-full h-full">
-            <img src={flor1} alt="" className="absolute bottom-0 left-0 w-[30%] max-w-[7rem]" />
+          <div className="onboarding-scene">
+            <img
+              src={flor1}
+              alt=""
+              className="onboarding-mobile-deco onboarding-scene__flor-left"
+            />
             <img
               src={flor2}
               alt=""
-              className="absolute bottom-0 right-0 w-[30%] max-w-[7rem] scale-x-[-1]"
+              className="onboarding-mobile-deco onboarding-scene__flor-right"
             />
           </div>
         );
@@ -104,87 +142,95 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-dvh w-full bg-slate-100 flex items-center justify-center">
-      <div
-        className="relative h-dvh w-full md:h-auto md:aspect-[9/19.5] md:w-[380px] lg:w-[420px]
-                   md:max-h-[92dvh] md:rounded-[2.5rem] md:shadow-2xl overflow-hidden
-                   bg-gradient-to-b from-sky-400 via-sky-300 to-sky-200"
-      >
-        <button
-          onClick={finish}
-          className={`absolute z-30 right-4 font-body text-sm text-white/85 hover:text-white transition-colors rounded ${focusRing}`}
-          style={{ top: "max(1rem, env(safe-area-inset-top))" }}
-        >
+    <div className="onboarding-page">
+      {/* Lateral izquierdo — decorativo, solo tablet (768–1023px) */}
+      <div className="onboarding-lateral onboarding-lateral--left">
+        <img src={slide.lateralLeft} alt="" className="onboarding-lateral__img" />
+      </div>
+
+      <div className="onboarding-card">
+        <button onClick={finish} className="onboarding-skip">
           Saltar
         </button>
 
-        {/* Estructura en columna real: la zona de cielo crece, el pie se queda pegado abajo siempre */}
-        <div className="flex flex-col h-full">
-          {/* Zona de cielo + título + ilustración */}
-          <div className="relative flex-1 min-h-0 overflow-hidden">
+        <div className="onboarding-card__inner">
+          <div
+            className="onboarding-sky"
+            onMouseMove={handleSkyMouseMove}
+            onMouseLeave={handleSkyMouseLeave}
+          >
             <img
               src={nube1}
               alt=""
-              className="absolute top-4 left-2 w-[clamp(4rem,20vw,5.5rem)] opacity-90 z-0"
+              className="onboarding-mobile-deco onboarding-mobile-deco--cloud-left onboarding-cloud--float"
+              style={{
+                "--parallax-x": `${cloudOffset.x * 14}px`,
+                "--parallax-y": `${cloudOffset.y * 8}px`,
+              }}
             />
             <img
               src={nube2}
               alt=""
-              className="absolute top-10 right-2 w-[clamp(3rem,14vw,4rem)] opacity-80 z-0"
+              className="onboarding-mobile-deco onboarding-mobile-deco--cloud-right onboarding-cloud--float onboarding-cloud--float-delayed"
+              style={{
+                "--parallax-x": `${cloudOffset.x * 22}px`,
+                "--parallax-y": `${cloudOffset.y * 12}px`,
+              }}
             />
 
-            <div className="relative z-20 pt-12 sm:pt-14 px-6 sm:px-8 text-center">
-              <h1 className="font-display font-bold text-white drop-shadow-sm leading-snug text-[clamp(1.2rem,4.5vw,1.6rem)]">
-                {slide.title}
-              </h1>
+            {/* key={slide.id}: fuerza a React a remontar este nodo en cada
+                cambio de slide, lo que reinicia la animación CSS de entrada
+                sin alterar la estructura ni el posicionamiento existente. */}
+            <div className="onboarding-title-wrap" key={`title-${slide.id}`}>
+              <h1 className="onboarding-title onboarding-anim-in">{slide.title}</h1>
             </div>
 
-            <div className="absolute inset-x-0 bottom-0 top-[36%] z-10">
-              {renderIllustration()}
+            <div className="onboarding-illustration" key={`illu-${slide.id}`}>
+              <div className="onboarding-anim-in onboarding-anim-in--illustration">
+                {renderIllustration()}
+              </div>
             </div>
           </div>
 
-          {/* Pie: dots + botón, con el color del "suelo" de fondo (o celeste si no hay suelo) */}
-          <div
-            className="shrink-0 flex flex-col items-center gap-3 sm:gap-4 px-6 sm:px-8 pt-5 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
-            style={
-              slide.ground
-                ? {
-                    backgroundImage: `url(${slide.ground})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "top",
-                  }
-                : { backgroundColor: "#bfe3f7" }
-            }
-          >
-            <div className="flex items-center gap-2">
+          <div className={`onboarding-footer onboarding-footer--${slide.ground}`}>
+            <p
+              className="onboarding-subtitle onboarding-anim-in onboarding-anim-in--delay-1"
+              key={`subtitle-${slide.id}`}
+            >
+              {slide.subtitle}
+            </p>
+
+            <div className="onboarding-dots">
               {SLIDES.map((s, i) => (
                 <span
                   key={s.id}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    i === step ? "w-6 bg-white" : "w-2 bg-white/50"
+                  className={`onboarding-dot ${
+                    i === step ? "onboarding-dot--active" : ""
                   }`}
                 />
               ))}
             </div>
 
             <button
+              className="onboarding-cta onboarding-anim-in onboarding-anim-in--delay-2"
+              key={`cta-${slide.id}`}
               onClick={handleNext}
-              className={`w-full max-w-xs font-display font-semibold text-white bg-ruta-sun hover:brightness-95 transition rounded-full py-3 sm:py-3.5 shadow-lg text-[clamp(0.95rem,3.2vw,1.05rem)] ${focusRing}`}
             >
               {slide.cta}
             </button>
 
             {isLast && (
-              <button
-                onClick={finish}
-                className={`font-body text-sm text-white/85 hover:text-white py-1 rounded ${focusRing}`}
-              >
+              <button className="onboarding-secondary" onClick={finish}>
                 Ya tengo cuenta
               </button>
             )}
           </div>
         </div>
+      </div>
+
+      {/* Lateral derecho — decorativo, solo tablet (768–1023px) */}
+      <div className="onboarding-lateral onboarding-lateral--right">
+        <img src={slide.lateralRight} alt="" className="onboarding-lateral__img" />
       </div>
     </div>
   );
