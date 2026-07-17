@@ -9,17 +9,21 @@ import escenaBienvenida from "../../assets/images/escena-bienvenida.png";
 import catedral from "../../assets/images/catedral.png";
 import bailarina from "../../assets/images/bailarina.png";
 import gigantona from "../../assets/images/gigantona.png";
-import nube1 from "../../assets/images/nube-1.png";
-import nube2 from "../../assets/images/nube-2.png";
+import nube1 from "../../assets/images/nube-3.png";
+import nube2 from "../../assets/images/nube-4.png";
 import flor1 from "../../assets/images/flor-1.png";
 import flor2 from "../../assets/images/flor-2.png";
 
+
+// nube1 / nube2 se siguen usando para la decoración lateral de tablet
+// (lateralLeft / lateralRight). nube3 / nube4 son las nuevas nubes que
+// se mueven en carrusel dentro del cielo (onboarding-sky).
 const SLIDES = [
   {
     id: "bienvenida",
     title: "Bienvenid@ a Ruta 505",
     subtitle: "Explora la cultura viva de Nicaragua junto a Pinolito, tu guía virtual.",
-    cta: "Comenzar",
+    cta: "Siguiente",
     ground: "sky",
     lateralLeft: nube1,
     lateralRight: nube2,
@@ -162,7 +166,7 @@ const Onboarding = () => {
             <img
               src={nube1}
               alt=""
-              className="onboarding-mobile-deco onboarding-mobile-deco--cloud-left onboarding-cloud--float"
+              className="onboarding-mobile-deco onboarding-mobile-deco--cloud-left onboarding-cloud--carousel-a"
               style={{
                 "--parallax-x": `${cloudOffset.x * 14}px`,
                 "--parallax-y": `${cloudOffset.y * 8}px`,
@@ -171,7 +175,7 @@ const Onboarding = () => {
             <img
               src={nube2}
               alt=""
-              className="onboarding-mobile-deco onboarding-mobile-deco--cloud-right onboarding-cloud--float onboarding-cloud--float-delayed"
+              className="onboarding-mobile-deco onboarding-mobile-deco--cloud-right onboarding-cloud--carousel-b"
               style={{
                 "--parallax-x": `${cloudOffset.x * 22}px`,
                 "--parallax-y": `${cloudOffset.y * 12}px`,
