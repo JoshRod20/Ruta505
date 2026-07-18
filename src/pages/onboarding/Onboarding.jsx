@@ -14,7 +14,6 @@ import nube2 from "../../assets/images/nube-4.png";
 import flor1 from "../../assets/images/flor-1.png";
 import flor2 from "../../assets/images/flor-2.png";
 
-
 // nube1 / nube2 se siguen usando para la decoración lateral de tablet
 // (lateralLeft / lateralRight). nube3 / nube4 son las nuevas nubes que
 // se mueven en carrusel dentro del cielo (onboarding-sky).
@@ -77,7 +76,7 @@ const Onboarding = () => {
 
   const finish = () => {
     localStorage.setItem("ruta505_hasVisited", "true");
-    navigate("/home", { replace: true });
+    navigate("/login", { replace: true });
   };
 
   const handleNext = () => (isLast ? finish() : setStep((s) => s + 1));
@@ -147,7 +146,8 @@ const Onboarding = () => {
 
   return (
     <div className="onboarding-page">
-      {/* Lateral izquierdo — decorativo, solo tablet (768–1023px) */}
+      {/* Lateral izquierdo — solo se usa en desktop split-screen (>=1024px);
+          en mobile/tablet ahora la tarjeta ocupa toda la pantalla */}
       <div className="onboarding-lateral onboarding-lateral--left">
         <img src={slide.lateralLeft} alt="" className="onboarding-lateral__img" />
       </div>
@@ -159,7 +159,7 @@ const Onboarding = () => {
 
         <div className="onboarding-card__inner">
           <div
-            className="onboarding-sky"
+            className={`onboarding-sky onboarding-sky--${slide.ground}`}
             onMouseMove={handleSkyMouseMove}
             onMouseLeave={handleSkyMouseLeave}
           >
@@ -187,6 +187,11 @@ const Onboarding = () => {
                 sin alterar la estructura ni el posicionamiento existente. */}
             <div className="onboarding-title-wrap" key={`title-${slide.id}`}>
               <h1 className="onboarding-title onboarding-anim-in">{slide.title}</h1>
+              {/* Subtítulo mobile/tablet — se oculta automáticamente en
+                  desktop (>=1024px), donde se muestra el de .onboarding-footer */}
+              <p className="onboarding-subtitle-mobile onboarding-anim-in onboarding-anim-in--delay-1">
+                {slide.subtitle}
+              </p>
             </div>
 
             <div className="onboarding-illustration" key={`illu-${slide.id}`}>
@@ -223,16 +228,18 @@ const Onboarding = () => {
               {slide.cta}
             </button>
 
+            {/*
             {isLast && (
               <button className="onboarding-secondary" onClick={finish}>
                 Ya tengo cuenta
               </button>
             )}
+            */}
           </div>
         </div>
       </div>
 
-      {/* Lateral derecho — decorativo, solo tablet (768–1023px) */}
+      {/* Lateral derecho — solo desktop split-screen */}
       <div className="onboarding-lateral onboarding-lateral--right">
         <img src={slide.lateralRight} alt="" className="onboarding-lateral__img" />
       </div>
