@@ -76,8 +76,13 @@ const Onboarding = () => {
 
   const finish = () => {
     localStorage.setItem("ruta505_hasVisited", "true");
-    navigate("/login", { replace: true });
+    navigate("/seleccionar-tipo", { replace: true });
   };
+
+  const skip = () => {
+  localStorage.setItem("ruta505_hasVisited", "true");
+  navigate("/login", { replace: true });
+};
 
   const handleNext = () => (isLast ? finish() : setStep((s) => s + 1));
 
@@ -153,7 +158,7 @@ const Onboarding = () => {
       </div>
 
       <div className="onboarding-card">
-        <button onClick={finish} className="onboarding-skip">
+        <button onClick={skip} className="onboarding-skip">
           Saltar
         </button>
 
