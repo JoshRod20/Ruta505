@@ -1,8 +1,20 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { ROLES } from "../../constants/roles";
+import { ROLES, ESTADOS_VERIFICACION } from "../../constants/roles";
+import LogoutButton from "./LogoutButton";
 
 const PendienteAprobacion = () => {
-  const { profile, logout } = useAuth();
+  const { profile, estadoVerificacion, role } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (estadoVerificacion === ESTADOS_VERIFICACION.APROBADO) {
+      navigate(role === ROLES.INSTITUCION ? "/panel-intur" : "/home", {
+        replace: true,
+      });
+    }
+  }, [estadoVerificacion, role, navigate]);
 
   return (
     <div className="registro-page">
@@ -22,9 +34,7 @@ const PendienteAprobacion = () => {
             pero no podrás publicar contenido hasta que tu cuenta sea
             verificada.
           </p>
-          <button className="registro-submit" type="button" onClick={logout}>
-            Cerrar sesión
-          </button>
+          <LogoutButton />
         </div>
       </div>
     </div>

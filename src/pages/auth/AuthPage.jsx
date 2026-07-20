@@ -41,7 +41,7 @@ const AuthPage = () => {
 
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email.trim(), password);
       navigate("/home", { replace: true });
     } catch (err) {
       setError(mapFirebaseError(err.code));
@@ -57,7 +57,7 @@ const AuthPage = () => {
       return;
     }
     try {
-      await sendPasswordResetEmail(auth, email);
+      await sendPasswordResetEmail(auth, email.trim());
       setFeedback("Te enviamos un enlace para restablecer tu contraseña.");
     } catch (err) {
       setError(mapFirebaseError(err.code));
